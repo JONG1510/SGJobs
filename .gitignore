@@ -1,0 +1,21 @@
+# Python virtual environments
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+
+# Large datasets (Excludes all CSV files)
+*.csv
+
+# Streamlit specific configuration and secrets
+.streamlit/secrets.toml
+.streamlit/config.toml
+
+# IDE configuration folders
+.vscode/
+.idea/
+
+# OS-specific system files
+.DS_Store
+Thumbs.db
