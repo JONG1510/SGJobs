@@ -24,8 +24,6 @@ if not os.path.exists(file_path):
     raise FileNotFoundError(f"Parquet file not found at: {file_path}")
 # Load the Parquet file into a DataFrame
 df_catMaster = pd.read_parquet(file_path)
-# Display the first few rows
-#print(df_catMaster.head())
 
 st.set_page_config(page_title="SG Jobs Data Dashboard", layout="wide")
 
@@ -33,30 +31,15 @@ st.title("SG Jobs Data Dashboard")
 st.caption("Data Source: SG Jobs Data (2023) | Updated: 2024-06-30")
 
 #st.header("Dashboard Overview")
-st.subheader("Business Objective : To propose the most efficient way to channel funds for training and career events")
-st.subheader("Target Users : Skillsfuture Development Agencies / SWDA")
+st.subheader("Business Objective : [Placeholder]")
 st.markdown("""
-- Channel subsidies to target the correct industries to fill the talent gaps.
-- Focus on the Job Categories with most vacancies. 
+- [Placeholder].
+- [Placeholder]
 """)
 st.subheader("Data Set")
 
 #st.write(f"Rows loaded: {len(df):,} | Columns: {len(df.columns)}")
 #st.dataframe(df.head(20), width="stretch")
-
-
-#Wendy's version
-#st.sidebar.header("Filters")
-#unique_categories = sorted(df_catMaster["category"])
-#selected_cats = st.sidebar.multiselect("Category", unique_categories, default=[])
-
-#if selected_cats:
-    #filtered_df = filtered_df[filtered_df["categories"].isin(selected_cats)]
-    
-    # 1. Join your list into a regex pattern: "cat1|cat2|cat3"
-  #  pattern = '|'.join(selected_cats)
-    # 2. Use str.contains with that pattern
-   # filtered_df = filtered_df[filtered_df["categories"].str.contains(pattern, case=False, na=False)]
 
    #Martin's version
 st.sidebar.header("Filters")
@@ -95,7 +78,6 @@ selected_positionCat = st.sidebar.multiselect("Position Category", unique_positi
 if selected_positionCat:
     filtered_df = filtered_df[filtered_df["position_category"].isin(selected_positionCat)]
 
-
 #st.header("Filtered Results")
 st.write(f"Matching rows: {len(filtered_df):,} | Columns: {len(filtered_df.columns)}")
 st.dataframe(filtered_df.head(20), width="stretch")
@@ -107,12 +89,6 @@ pivot_df = filtered_df.pivot_table(
     values="numberOfVacancies", 
     aggfunc="sum"
 )
-
-#pivot_df = df.pivot_table(
-#    index="position_category", 
-#    values="numberOfVacancies", 
-#    aggfunc="sum"
-#)
 
 # Display it beautifully
 st.write("### Top Job Categories for Open Positions")
