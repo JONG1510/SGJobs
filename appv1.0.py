@@ -18,19 +18,19 @@ df = load_data(DATA_PATH)
 filtered_df = df.copy()
 
 # Define the file path
-file_path = "./cat_data_count.csv"
+file_path = "./cat_data_counts.parquet"
 # Validate that the file exists before reading
 if not os.path.exists(file_path):
-    raise FileNotFoundError(f"CSV file not found at: {file_path}")
-# Load the CSV into a DataFrame
-df_catMaster = pd.read_csv(file_path)
+    raise FileNotFoundError(f"Parquet file not found at: {file_path}")
+# Load the Parquet file into a DataFrame
+df_catMaster = pd.read_parquet(file_path)
 # Display the first few rows
 #print(df_catMaster.head())
 
-st.set_page_config(page_title="Team 6 Dashboard", layout="wide")
+st.set_page_config(page_title="SG Jobs Data Dashboard", layout="wide")
 
-st.title("Team 6 Dashboard")
-st.caption("Members : Jin Sheng, Zhi Qiang, Huey Ping, Chee Peng, Martin, Caelen, Wendy")
+st.title("SG Jobs Data Dashboard")
+st.caption("Data Source: SG Jobs Data (2023) | Updated: 2024-06-30")
 
 #st.header("Dashboard Overview")
 st.subheader("Business Objective : To propose the most efficient way to channel funds for training and career events")
@@ -40,15 +40,9 @@ st.markdown("""
 - Focus on the Job Categories with most vacancies. 
 """)
 st.subheader("Data Set")
-st.markdown("""
-- Removed 3988 lines of NA
-- Removed lines where vacancy >99            
-- Focus on Open Positions only(Open/Re-Opened)
-- Excluded Temp/Internship/Freelance/Flexi-work(less than 3% of total vacancies) 
-""")
+
 #st.write(f"Rows loaded: {len(df):,} | Columns: {len(df.columns)}")
 #st.dataframe(df.head(20), width="stretch")
-
 
 
 #Wendy's version
@@ -74,7 +68,6 @@ selected_jobStatus = st.sidebar.multiselect("Job Status", unique_jobStatus, defa
 if selected_jobStatus:
     filtered_df = filtered_df[filtered_df["status_jobStatus"].isin(selected_jobStatus)]
 
-
 #parsed_data = [item for sublist in filtered_df['categories'] for item in json.loads(sublist)]
 #cat_data = pd.DataFrame(parsed_data)
 top_5_cat_data = df_catMaster.head()
@@ -84,7 +77,7 @@ top_5_cat_data = df_catMaster.head()
 #parsed_data = [item for sublist in filtered_df['categories'] for item in json.loads(sublist)]
 #cat_data = pd.DataFrame(parsed_data)
 top_5_cat_data = df_catMaster.head()
-unique_categories = sorted(df_catMaster["index"])
+unique_categories = sorted(df_catMaster["category"].dropna().unique())
 selected_cats = st.sidebar.multiselect("Category", unique_categories, default=["Information Technology"])
 
 if selected_cats:
@@ -101,9 +94,6 @@ selected_positionCat = st.sidebar.multiselect("Position Category", unique_positi
 
 if selected_positionCat:
     filtered_df = filtered_df[filtered_df["position_category"].isin(selected_positionCat)]
-
-
-
 
 
 #st.header("Filtered Results")
@@ -131,7 +121,6 @@ st.dataframe(top_5_cat_data, use_container_width=True)
 # Display it beautifully
 st.write(f"### Job Vacancies by Position Category for {selected_cats}")
 st.dataframe(pivot_df, use_container_width=True)
-
 
 #df_job1.pivot_table(index=["position_category", "positionLevels"], values=["numberOfVacancies"],aggfunc=sum)
 # Create the pivot in Pandas first
